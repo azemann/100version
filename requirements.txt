@@ -1,0 +1,9 @@
+streamlit
+huggingface_hub
+PyMuPDF
+python-docx
+whisper
+ffmpeg-python
+pytesseract
+pillow
+requests
