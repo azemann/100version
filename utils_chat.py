@@ -23,7 +23,7 @@ def ask(prompt, history):
             full_prompt,
             max_new_tokens=300,
             temperature=0.7,
-            stop_sequences=["user:", "assistant:"],
+            stop=["user:", "assistant:"]
         )
         answer = response.strip().split("assistant:")[-1].strip()
     except Exception as e:
