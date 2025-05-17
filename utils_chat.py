@@ -1,35 +1,32 @@
 import os
-from huggingface_hub import InferenceClient
+import requests
 
-token = os.getenv("HF_TOKEN")
-if not token:
-    raise ValueError("⚠️ Variable d’environnement HF_TOKEN manquante.")
+api_key = os.getenv("OPENROUTER_API_KEY")
+if not api_key:
+    raise ValueError("⚠️ Variable OPENROUTER_API_KEY manquante.")
 
-client = InferenceClient(
-    model="mistralai/Mistral-7B-Instruct-v0.1",
-    token=token
-)
+API_URL = "https://openrouter.ai/api/v1/chat/completions"
+MODEL = "mistral/mistral-7b-instruct"  # Modifiable à tout moment
+
+headers = {
+    "Authorization": f"Bearer {api_key}",
+    "Content-Type": "application/json"
+}
 
 def init_chat():
-    return [{"role": "system", "content": "Tu es un assistant IA francophone, clair et pertinent."}]
+    return [{"role": "system", "content": "Tu es un assistant IA francophone, clair, logique et créatif."}]
 
 def ask(prompt, history):
     history.append({"role": "user", "content": prompt})
-    full_prompt = "\n".join(f"{m['role']}: {m['content']}" for m in history)
-    full_prompt += "\nassistant:"
-
     try:
-        print("🟡 Prompt envoyé à Mistral:\n", full_prompt)
-        response = client.text_generation(
-            prompt=full_prompt,
-            max_new_tokens=300,
-            temperature=0.7,
-            stop=["user:", "assistant:"]
-        )
-        print("🟢 Réponse brute Mistral:\n", response)
-        answer = response.strip().split("assistant:")[-1].strip()
+        response = requests.post(API_URL, headers=headers, json={
+            "model": MODEL,
+            "messages": history,
+            "temperature": 0.7
+        })
+        response.raise_for_status()
+        answer = response.json()["choices"][0]["message"]["content"].strip()
     except Exception as e:
-        answer = f"❌ Erreur IA : {e}"
-
+        answer = f"❌ Erreur OpenRouter : {e}"
     history.append({"role": "assistant", "content": answer})
     return answer

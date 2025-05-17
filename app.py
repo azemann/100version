@@ -6,8 +6,8 @@ from modules.loader_video import transcribe_video_audio
 from modules.loader_image import extract_image_text
 from utils_chat import init_chat, ask
 
-st.set_page_config(page_title="AZE LLM Cloud", layout="centered")
-st.title("🤖 AZE LLM Cloud – Drop tes fichiers, discute avec ton IA")
+st.set_page_config(page_title="AZE LLM Cloud (OpenRouter)", layout="centered")
+st.title("🤖 AZE LLM Cloud – Drop tes fichiers, discute avec ton IA (OpenRouter)")
 
 if "history" not in st.session_state:
     st.session_state.history = init_chat()

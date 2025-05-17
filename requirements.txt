@@ -1,5 +1,5 @@
 streamlit
-huggingface_hub
+requests
 PyMuPDF
 python-docx
 whisper
