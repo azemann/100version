@@ -3,36 +3,19 @@ from huggingface_hub import InferenceApi
 
 token = os.getenv("HF_TOKEN")
 if not token:
-    raise ValueError("⚠️ Variable d’environnement HF_TOKEN manquante.")
+    raise ValueError(" Variable denvironnement HF_TOKEN manquante.")
 
 mistral = InferenceApi("mistralai/Mistral-7B-Instruct-v0.1", token=token)
 
 def init_chat():
-    return [{"role": "system", "content": "Tu es un assistant utile."}]
-
-def def ask(prompt, history):
-    history.append({"role": "user", "content": prompt})
-    message = "\n".join(f"{m['role']}: {m['content']}" for m in history)
-    message += "\nassistant:"
+    return {.git,README.md,app.py,modules,requirements.txt,utils_chat.py} "role": "system", "content": "Tu es un assistant utile.""role": "user", "content": prompt)
+    message = "n".join(f"{.git,README.md,app.py,modules,requirements.txt,utils_chat.py}" mole': montent'" for m in history)
+    message += "nassistant:"
 
     try:
-        response = mistral(message)  # 🔧 plus de parameters ici
+        response = mistral(message)
         text = response.get("generated_text", response)
-        answer = text.split("assistant:")[-1].strip()
-    except Exception as e:
-        answer = f"❌ Erreur lors de la requête à Mistral : {e}"
+        answer = text.split("assistant:") Erreur lors de la requte  Mistral : {.git,README.md,app.py,modules,requirements.txt,utils_chat.py} e"
 
-    history.append({"role": "assistant", "content": answer})
-    return answer
-
-    try:
-        response = mistral(message, parameters={"temperature": 0.5, "max_new_tokens": 300})
-        if not response:
-            return "⚠️ Aucun texte généré. La réponse est vide."
-        text = response.get("generated_text", response)
-        answer = text.split("assistant:")[-1].strip()
-    except Exception as e:
-        answer = f"❌ Erreur lors de la requête à Mistral : {e}"
-
-    history.append({"role": "assistant", "content": answer})
+    history.append({.git,README.md,app.py,modules,requirements.txt,utils_chat.py} "role": "assistant", "content": answer)
     return answer
