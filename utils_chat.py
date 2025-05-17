@@ -1,26 +1,33 @@
 import os
-from huggingface_hub import InferenceApi
+from huggingface_hub import InferenceClient
 
 token = os.getenv("HF_TOKEN")
 if not token:
     raise ValueError("⚠️ Variable d’environnement HF_TOKEN manquante.")
 
-mistral = InferenceApi("mistralai/Mistral-7B-Instruct-v0.1", token=token)
+client = InferenceClient(
+    model="mistralai/Mistral-7B-Instruct-v0.1",
+    token=token
+)
 
 def init_chat():
     return [{"role": "system", "content": "Tu es un assistant utile."}]
 
 def ask(prompt, history):
     history.append({"role": "user", "content": prompt})
-    message = "\n".join(f"{m['role']}: {m['content']}" for m in history)
-    message += "\nassistant:"
+    full_prompt = "\n".join(f"{m['role']}: {m['content']}" for m in history)
+    full_prompt += "\nassistant:"
 
     try:
-        response = mistral(message, raw_response=True)
-        text = response.text
-        answer = text.split("assistant:")[-1].strip()
+        response = client.text_generation(
+            full_prompt,
+            max_new_tokens=300,
+            temperature=0.7,
+            stop_sequences=["user:", "assistant:"],
+        )
+        answer = response.strip().split("assistant:")[-1].strip()
     except Exception as e:
-        answer = f"❌ Erreur lors de la requête à Mistral : {e}"
+        answer = f"❌ Erreur Mistral: {e}"
 
     history.append({"role": "assistant", "content": answer})
     return answer
