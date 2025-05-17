@@ -6,15 +6,15 @@ from modules.loader_video import transcribe_video_audio
 from modules.loader_image import extract_image_text
 from utils_chat import init_chat, ask
 
-st.set_page_config(page_title="AZE LLM Cloud", layout="wide")
+st.set_page_config(page_title="AZE LLM Cloud", layout="centered")
 st.title("🤖 AZE LLM Cloud – Drop tes fichiers, discute avec ton IA")
 
 if "history" not in st.session_state:
     st.session_state.history = init_chat()
 
 uploaded = st.file_uploader("📁 Dépose ton fichier ici :", type=[
-    "txt", "md", "pdf", "docx", "mp3", "wav", "mp4", "mov", "png", "jpg"
-], accept_multiple_files=False)
+    "txt", "md", "pdf", "docx", "mp3", "wav", "mp4", "mov", "png", "jpg", "jpeg"
+])
 
 if uploaded:
     ext = uploaded.name.split('.')[-1].lower()
@@ -26,13 +26,13 @@ if uploaded:
         content = load_text_file(path)
     elif ext in ["mp3", "wav"]:
         content = transcribe_audio(path)
-    elif ext in ["mp4", "mov"]:
+    elif ext in ["mp4", "mov", "mkv"]:
         content = transcribe_video_audio(path)
     else:
         content = extract_image_text(path)
 
-    st.success("✅ Fichier analysé")
-    st.text_area("🧾 Contenu extrait :", content, height=200)
+    st.success("✅ Contenu extrait.")
+    st.text_area("🧾 Aperçu :", content, height=200)
     st.session_state.history.append({"role": "system", "content": content})
 
 prompt = st.text_input("💬 Pose ta question à l’IA")

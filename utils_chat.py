@@ -11,7 +11,7 @@ client = InferenceClient(
 )
 
 def init_chat():
-    return [{"role": "system", "content": "Tu es un assistant utile."}]
+    return [{"role": "system", "content": "Tu es un assistant IA francophone, clair et pertinent."}]
 
 def ask(prompt, history):
     history.append({"role": "user", "content": prompt})
@@ -20,15 +20,14 @@ def ask(prompt, history):
 
     try:
         response = client.text_generation(
-            full_prompt,
+            prompt=full_prompt,
             max_new_tokens=300,
             temperature=0.7,
             stop=["user:", "assistant:"]
         )
-        print("🧠 Réponse brute Mistral :", response)
         answer = response.strip().split("assistant:")[-1].strip()
     except Exception as e:
-        answer = f"❌ Erreur Mistral: {e}"
+        answer = f"❌ Erreur IA : {e}"
 
     history.append({"role": "assistant", "content": answer})
     return answer

@@ -6,4 +6,3 @@ whisper
 ffmpeg-python
 pytesseract
 pillow
-requests
