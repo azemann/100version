@@ -19,12 +19,14 @@ def ask(prompt, history):
     full_prompt += "\nassistant:"
 
     try:
+        print("🟡 Prompt envoyé à Mistral:\n", full_prompt)
         response = client.text_generation(
             prompt=full_prompt,
             max_new_tokens=300,
             temperature=0.7,
             stop=["user:", "assistant:"]
         )
+        print("🟢 Réponse brute Mistral:\n", response)
         answer = response.strip().split("assistant:")[-1].strip()
     except Exception as e:
         answer = f"❌ Erreur IA : {e}"
